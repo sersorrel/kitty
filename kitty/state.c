@@ -581,6 +581,17 @@ convert_mods(PyObject *obj) {
     return resolve_mods(PyLong_AsLong(obj));
 }
 
+static void
+linux_bell_theme_name(PyObject *str) {
+    if (OPT(linux_bell_theme_name)) free(OPT(linux_bell_theme_name));
+    OPT(linux_bell_theme_name) = NULL;
+    if (str == Py_None || !PyUnicode_Check(str)) return;
+    Py_ssize_t sz;
+    const char *s = PyUnicode_AsUTF8AndSize(str, &sz);
+    OPT(linux_bell_theme_name) = calloc(sz + 1, 1);
+    if (OPT(linux_bell_theme_name)) memcpy(OPT(linux_bell_theme_name), s, sz);
+}
+
 static WindowTitleIn
 window_title_in(PyObject *title_in) {
     const char *in = PyUnicode_AsUTF8(title_in);
@@ -787,6 +798,8 @@ PYWRAP1(set_options) {
     Py_DECREF(ret); if (PyErr_Occurred()) return NULL;
 
     GA(background_image); background_image(ret); Py_CLEAR(ret);
+
+    GA(linux_bell_theme_name); linux_bell_theme_name(ret); Py_CLEAR(ret);
 
 #define read_adjust(name) { \
     PyObject *al = PyObject_GetAttrString(opts, #name); \

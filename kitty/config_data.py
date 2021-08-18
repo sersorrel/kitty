@@ -690,6 +690,12 @@ o('bell_on_tab', True, long_text=_('''
 Show a bell symbol on the tab if a bell occurs in one of the windows in the
 tab and the window is not the currently focused window'''))
 
+o('linux_bell_theme_name', 'freedesktop', long_text=_('''
+If audio bell is enabled on Linux, sets the XDG Sound Theme kitty will
+use to play the bell sound. May be removed in the future if it becomes
+possible to specify a system sound theme in a desktop-agnostic manner.
+'''))
+
 o('command_on_bell', 'none', option_type=to_cmdline, long_text=_('''
 Program to run when a bell occurs.
 '''))
